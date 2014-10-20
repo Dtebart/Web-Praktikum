@@ -67,10 +67,11 @@ function buildParticipant(){
 function addEntry(participant){
 	var number = $("<td></td>").text(numberOfRows++);
 	var lastName = $("<td></td>").text(participant["lastName"]);
+	var firstName = $("<td></td>").text(participant["firstName"]);
 	var editButton = $("<button type=\"button\" class = \"btn btn-primary\" onclick = \"edit(this)\"></button>").text("Bearbeiten");
 	var deleteButton = $("<button type=\"button\" class = \"btn btn-primary\" onclick = \"discard(this)\"></button>").text("Löschen");
 	var buttonData = $("<td></td>").append(editButton, deleteButton);
 	
-	var row = $("<tr></tr>").append(number, lastName, buttonData);
-	$("#participantTable").append(row);
+	var row = $("<tr></tr>").append(number, lastName, firstName, buttonData);
+	$("#participant-table table").append(row);
 }

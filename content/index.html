@@ -13,21 +13,26 @@
 		<div id = "header">
 			<h1> Studentenfeier WS 2014/2015 </h1>
 		</div>
-		<ul class="nav nav-tabs" role="tablist">
-		  <li class="active"><a href="#registrate-form" role="tab" data-toggle="tab">Anmelden</a></li>
-		  <li><a href="#edit-form" role="tab" data-toggle="tab">Bearbeiten</a></li>
-		  <li><a href="#edit-form" role="tab" data-toggle="tab">Löschen</a></li>
-		</ul>
-		<div>
-			<table id  = "participantTable" class = "table table-hover" id = "participants">
-				<tr>
-					<th>Nr.</th>
-					<th>Name<th>
-				</tr>
-			</table>
+		<div id = "box">
+			<a>Willkommen zur Absolventenfeier des Wintersemesters 2014/2015.
+			   Es findet an der Hochschule Niederrhein am Campus-Süd in Krefeld ab 13 Uhr im Audimax statt.
+			   Die Feier wird anschließend mit einen Buffet, mit genügend Essen und Getränke für jeden, abgeschlossen.</a>
 		</div>
+		<ul class="nav nav-tabs" role="tablist">
+		  <li class="active"><a href="#participant-table" role="tab" data-toggle="tab">Teilnehmer</a></li>
+		  <li><a href="#registrate-form" role="tab" data-toggle="tab">Anmelden</a></li>
+		</ul>
 		<div class="tab-content">
-			<div class = "tab-pane active" id = "registrate-form">
+			<div class = "tab-pane active" id="participant-table">
+				<table class = "table table-hover">
+					<tr>
+						<th>Nr.</th>
+						<th>Name</th>
+						<th>Vorname</th>
+					</tr>
+				</table>
+			</div>
+			<div class = "tab-pane" id = "registrate-form">
 				<form class="form-horizontal" role="form">
 					<div class="form-group">
 						<label for="name" class="col-sm-2 control-label">Name</label>
