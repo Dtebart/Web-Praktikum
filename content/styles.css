@@ -1,0 +1,15 @@
+#header {
+    background-color:black;
+    color:white;
+    text-align:center;
+    padding:5px;
+}
+
+#actions {
+	line-height:30px;
+    background-color:#eeffff;
+    height: 100%;
+    width: 100%;
+    float:left;
+    padding:5px;
+}
