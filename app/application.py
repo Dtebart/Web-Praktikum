@@ -46,9 +46,10 @@ class Application_cl(object):
         json_list = []
         
         for participant_file in participants_table:
-            json_string = open("data\\" + participant_file, "r+").read()
-            json_obj = json.loads(json_string)
-            json_list.append(json_obj)
+            if participant_file.endswith(".json"):
+                json_string = open("data\\" + participant_file, "r+").read()
+                json_obj = json.loads(json_string)
+                json_list.append(json_obj)
         
         return str(json_list)
     
