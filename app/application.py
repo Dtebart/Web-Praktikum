@@ -26,6 +26,20 @@ class Application_cl(object):
     default.exposed = True
     
     #-------------------------------------
+    def get_user_id(self):
+    #-------------------------------------
+        id_file = open("data\\id.txt", "r+")
+        user_id = int(id_file.read()) + 1
+        id_file.close()
+        
+        
+        id_file = open("data\\id.txt", "w")
+        id_file.write(str(user_id))
+        id_file.close()
+        
+        return str(user_id);
+    
+    #-------------------------------------
     def get_list(self, *arglist, **kwargs):
     #-------------------------------------
         participants_table = os.listdir("data")
@@ -44,8 +58,8 @@ class Application_cl(object):
     def registrate(self, *arglist, **kwargs):
     #-------------------------------------
         registration_data = cherrypy.request.body.params
-        username = registration_data["lastName"]
-        json_file = open("data\\" + username + ".json", "w+")
+        user_id = self.get_user_id()
+        json_file = open("data\\" + user_id + ".json", "w+")
         json.dump(registration_data, json_file)
         json_file.close()
         return str(registration_data)
