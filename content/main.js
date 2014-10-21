@@ -42,11 +42,33 @@ function registrate(){
 	}
 }
 
-function edit(eventObj){
-	
+function getEditForm(){
+	$("#participant-table").removeClass("active");
+	$("#edit-form").addClass("active");
+	$(".nav-tabs .active").removeClass("active");
+	var userRow = $("this").parent();
+	alert($(userRow).text);
+	var userData = userRow.children("td.edit-data");
+	for (var i = 0; i < userData.length; i++){
+		alert($(userData[i]).text);
+	}
 }
 
-function discard(eventObj){
+$(document).ready(function(){
+	$("table").on("click", "button.btn-primary", function(event) {
+		$("#participant-table").removeClass("active");
+		$("#edit-form").addClass("active");
+		$(".nav-tabs .active").removeClass("active");
+		var userRow = $(event.target).parent().parent();
+		alert(userRow.id);
+		var userData = userRow.children("td.edit-data");
+		for (var i = 0; i < userData.length; i++){
+			alert($(userData[i]).text);
+		}
+    });
+});
+
+function getDiscardForm(){
 
 }
 
@@ -66,10 +88,10 @@ function buildParticipant(){
 
 function addEntry(participant){
 	var number = $("<td></td>").text(numberOfRows++);
-	var lastName = $("<td></td>").text(participant["lastName"]);
-	var firstName = $("<td></td>").text(participant["firstName"]);
-	var editButton = $("<button type=\"button\" class = \"btn btn-primary\" onclick = \"edit(this)\"></button>").text("Bearbeiten");
-	var deleteButton = $("<button type=\"button\" class = \"btn btn-primary\" onclick = \"discard(this)\"></button>").text("Löschen");
+	var lastName = $("<td></td>").text(participant["lastName"]).addClass("edit-data");
+	var firstName = $("<td></td>").text(participant["firstName"]).addClass("edit-data");
+	var editButton = $("<button type=\"button\" class = \"btn btn-primary\"></button>").text("Bearbeiten");
+	var deleteButton = $("<button type=\"button\" class = \"btn btn-primary\"></button>").text("Löschen");
 	var buttonData = $("<td></td>").append(editButton, deleteButton);
 	
 	var row = $("<tr></tr>").append(number, lastName, firstName, buttonData);
