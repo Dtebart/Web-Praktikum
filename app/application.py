@@ -27,6 +27,16 @@ class Application_cl(object):
     default.exposed = True
     
     #-------------------------------------
+    def get_user_data(self, user_id):
+    #-------------------------------------
+        json_file = open("data\\" + user_id + ".json", "r+")
+        json_str = json_file.read()
+        json_obj = json.loads(json_str)
+        json_file.close()
+        
+        return json_obj
+    
+    #-------------------------------------
     def next_user_id(self):
     #-------------------------------------
         # Catch current user-id + 1
@@ -83,10 +93,16 @@ class Application_cl(object):
         # Catch request-data
         edit_data = cherrypy.request.body.params
         
-        # Override user-data with new data
-        json_file = open("data\\" + edit_data["id"] + ".json", "w+")
-        json.dump(edit_data, json_file)
-        json_file.close()
+        # Get password in file of requested user
+        json_obj = self.get_user_data(edit_data["id"])
+        
+        if json_obj["password"] == edit_data["password"]:
+            # Override user-data with new data
+            json_file = open("data\\" + edit_data["id"] + ".json", "w+")
+            json.dump(edit_data, json_file)
+            json_file.close()
+        else:
+            raise cherrypy.HTTPError(403, "Invalid password")
         
         return str(edit_data)
            
@@ -98,7 +114,11 @@ class Application_cl(object):
         # Catch request-data
         delete_data = cherrypy.request.body.params
         
-        os.remove("data\\" + delete_data["id"] + ".json")
+        json_obj = self.get_user_data(delete_data["id"])
+        if json_obj["password"] == delete_data["password"]:
+            os.remove("data\\" + delete_data["id"] + ".json")
+        else:
+            raise cherrypy.HTTPError(403, "Invalid password")        
         
         return str(delete_data)
     
