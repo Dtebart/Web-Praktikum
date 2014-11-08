@@ -1,4 +1,4 @@
-function addEntry(participant){
+function renderNewEntry(participant){
 	var row = $("<tr id = \"user" + participant["id"] + "\"></tr>");
 	var rowData = new Array();
 	
@@ -11,7 +11,7 @@ function addEntry(participant){
 	
 	// create buttons for the entry
 	var editButton = $("<button type=\"button\" class = \"btn btn-primary\"></button>").text("Bearbeiten");
-	var deleteButton = $("<button type=\"button\" class = \"btn btn-primary\"></button>").text("Löschen");
+	var deleteButton = $("<button type=\"button\" class = \"btn btn-primary\"></button>").text("LÃ¶schen");
 	
 	// associate each button with an user index
 	editButton.data("index", entries.length - 1);

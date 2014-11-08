@@ -5,7 +5,6 @@ function registrate(){
 		$.post("registrate", newParticipant, function(data, status){
 							var json_string = data.replace(/'/g, '"');
 							var newParticipant = JSON.parse(json_string);
-							entries.push(newParticipant);
 							addEntry(newParticipant);
 		});
 	}
