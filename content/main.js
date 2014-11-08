@@ -17,16 +17,25 @@ $(document).ready(function(){
 $(document).ready(function(){
 	$("table").on("click", "button.btn-primary", function(event) {
 		$("#participant-table").removeClass("active");
-		$("#edit-form").addClass("active");
 		$(".nav-tabs .active").removeClass("active");
 		
 		participantIndex = $(this).data("index");
 		var participantEntry = entries[participantIndex];
+		var inputFields;
 		
-		var inputField = $("#edit-form").find(":text");
+		if ($(this).text() == "Bearbeiten"){
+			$("#edit-form").addClass("active");
+			inputFields = $("#edit-form").find(":text");
+		}
+		else{
+			$("#delete-form").addClass("active");
+			inputFields = $("#delete-form").find(":text");
+		}
 		
-		for (var i = 1; i < participantKeywords.length - 1; i++){
-			inputField[i - 1].value = participantEntry[participantKeywords[i]];
+		for (var i = 1; i <= inputFields.length; i++){
+			var participantData = participantEntry[participantKeywords[i]];
+			console.log(participantData);
+			inputFields[i - 1].value = participantData;
 		}
     });
 });
@@ -45,12 +54,21 @@ function registrate(){
 
 function edit(){
 	var selectedParticipant = buildParticipant("edit-form");
-	selectedParticipant["id"] = participantIndex;
 	
 	$.post("edit", selectedParticipant, function(data, status){
 				var json_string = data.replace(/'/g, '"');
 				var selectedParticipant = JSON.parse(json_string);
 				editEntry(selectedParticipant);
+	});
+}
+
+function erase(){
+	var selectedParticipant = buildParticipant("delete-form");
+	
+	$.post("delete", selectedParticipant, function(data, status){
+				var json_string = data.replace(/'/g, '"');
+				var selectedParticipant = JSON.parse(json_string);
+				deleteEntry(selectedParticipant);
 	});
 }
 
@@ -77,6 +95,10 @@ function buildParticipant(formName){
 	var newParticipant = {};
 	var content = [];
 	
+	if (formName != "registrate-form"){
+		newParticipant["id"] = entries[participantIndex]["id"];
+	}
+	
 	// fill a new json object with the entered data
 	for (i = 1; i < participantKeywords.length; i++){
 		content[i] = $("#" + formName + " " + "#" + participantKeywords[i]).val();
@@ -100,6 +122,10 @@ function editEntry(participant){
 	});
 }
 
+function deleteEntry(participant){
+	$("#user" + participant["id"]).remove();
+}
+
 function renderEntry(participant){
 	var row = $("<tr id = \"user" + participant["id"] + "\"></tr>");
 	var rowData = new Array();
@@ -116,8 +142,8 @@ function renderEntry(participant){
 	var deleteButton = $("<button type=\"button\" class = \"btn btn-primary\"></button>").text("Löschen");
 	
 	// associate each button with an user index
-	editButton.data("index", participant["id"]);
-	deleteButton.data("index", participant["id"]);
+	editButton.data("index", entries.length - 1);
+	deleteButton.data("index", entries.length - 1);
 	
 	// insert the row and buttons into the table
 	var buttonData = $("<td></td>").append(editButton, deleteButton);

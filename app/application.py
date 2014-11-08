@@ -51,9 +51,11 @@ class Application_cl(object):
         # Open all json files in directory data and append them to output string
         for participant_file in participants_table:
             if participant_file.endswith(".json"):
-                json_string = open("data\\" + participant_file, "r+").read()
+                file_obj = open("data\\" + participant_file, "r+")
+                json_string = file_obj.read()
                 json_obj = json.loads(json_string)
                 json_list.append(json_obj)
+                file_obj.close()
         
         return str(json_list)
     
@@ -80,6 +82,8 @@ class Application_cl(object):
     #-------------------------------------
         # Catch request-data
         edit_data = cherrypy.request.body.params
+        
+        # Override user-data with new data
         json_file = open("data\\" + edit_data["id"] + ".json", "w+")
         json.dump(edit_data, json_file)
         json_file.close()
@@ -87,5 +91,17 @@ class Application_cl(object):
         return str(edit_data)
            
     edit.exposed = True
+    
+    #-------------------------------------
+    def delete(self, *arglist, **kwargs):
+    #-------------------------------------
+        # Catch request-data
+        delete_data = cherrypy.request.body.params
+        
+        os.remove("data\\" + delete_data["id"] + ".json")
+        
+        return str(delete_data)
+    
+    delete.exposed = True
 # EOF
             
