@@ -17,6 +17,7 @@ class Application_cl(object):
     #-------------------------------------
     def default(self, *arglist, **kwargs):
     #-------------------------------------
+        # Return an error message
         msg_s = "unbekannte Anforderung: " + \
               str(arglist) + \
               ' ' + \
@@ -26,13 +27,14 @@ class Application_cl(object):
     default.exposed = True
     
     #-------------------------------------
-    def get_user_id(self):
+    def next_user_id(self):
     #-------------------------------------
+        # Catch current user-id + 1
         id_file = open("data\\id.txt", "r+")
         user_id = int(id_file.read()) + 1
         id_file.close()
         
-        
+        # Override new user-id
         id_file = open("data\\id.txt", "w")
         id_file.write(str(user_id))
         id_file.close()
@@ -42,9 +44,11 @@ class Application_cl(object):
     #-------------------------------------
     def get_list(self, *arglist, **kwargs):
     #-------------------------------------
+        # Catch a table of all files in directory data
         participants_table = os.listdir("data")
         json_list = []
         
+        # Open all json files in directory data and append them to output string
         for participant_file in participants_table:
             if participant_file.endswith(".json"):
                 json_string = open("data\\" + participant_file, "r+").read()
@@ -58,14 +62,30 @@ class Application_cl(object):
     #-------------------------------------
     def registrate(self, *arglist, **kwargs):
     #-------------------------------------
+        # Catch request-data
         registration_data = cherrypy.request.body.params
-        user_id = self.get_user_id()
-        json_file = open("data\\" + user_id + ".json", "w+")
+        
+        # Create new file for user registration
+        registration_data["id"] = self.next_user_id()
+        json_file = open("data\\" + registration_data["id"] + ".json", "w+")
         json.dump(registration_data, json_file)
         json_file.close()
+        
         return str(registration_data)
     
     registrate.exposed = True
+    
+    #-------------------------------------
+    def edit(self, *arglist, **kwargs):
+    #-------------------------------------
+        # Catch request-data
+        edit_data = cherrypy.request.body.params
+        json_file = open("data\\" + edit_data["id"] + ".json", "w+")
+        json.dump(edit_data, json_file)
+        json_file.close()
+        
+        return str(edit_data)
            
+    edit.exposed = True
 # EOF
             
