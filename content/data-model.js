@@ -3,6 +3,7 @@ var participantKeywords = ["id", "lastName", "firstName", "numOfCompanions", "co
 var participantIndex;
 
 function buildParticipant(formName){
+	
 	var newParticipant = {};
 	var content = [];
 	
@@ -35,10 +36,12 @@ $(document).ready(function(){
 		var inputFields;
 		
 		if ($(this).text() == "Bearbeiten"){
+			$("#feedback").hide();
 			$("#edit-form").addClass("active");
 			inputFields = $("#edit-form").find(":text");
 		}
 		else{
+			$("#feedback").hide();
 			$("#delete-form").addClass("active");
 			inputFields = $("#delete-form").find(":text");
 		}

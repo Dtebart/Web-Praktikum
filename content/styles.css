@@ -23,3 +23,14 @@
 	padding:5px;
 	border:1px solid black;
 }
+
+#feedback a {
+	color:#ffffff;
+	background:#00CC00;
+	font:bold 16px verdana, sans-serif;
+	text-decoration:none;
+	text-align:center;
+	display:block;
+	padding:5px;
+	border:1px solid black;
+}
