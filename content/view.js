@@ -89,7 +89,14 @@ function deleteEntry(participant){
 	$("#user" + participant["id"]).remove();
 }
 
-function showSuccess(feedbackText){
+function showFeedback(feedbackText, operationSuccessfull){
+
+	if (operationSuccessfull){
+		$("#feedback").css("background-color", "green");
+	}
+	else{
+		$("#feedback").css("background-color", "red");
+	}
 	$("#feedback-text").text(feedbackText);
 	$("#feedback").show();
 }

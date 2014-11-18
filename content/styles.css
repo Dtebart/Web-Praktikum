@@ -24,9 +24,8 @@
 	border:1px solid black;
 }
 
-#feedback a {
+#feedback span{
 	color:#ffffff;
-	background:#00CC00;
 	font:bold 16px verdana, sans-serif;
 	text-decoration:none;
 	text-align:center;

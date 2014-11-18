@@ -21,7 +21,7 @@ function registrate(){
 							changeView("#registrate-form", "#participant-table");
 							
 							var participantId = newParticipant["id"];
-							showSuccess("Nr. " + participantId + " erfolgreich registriert");
+							showFeedback("Nr. " + participantId + " erfolgreich registriert", true);
 		});
 	}
 }
@@ -37,7 +37,7 @@ function edit(){
 				editEntry(changedParticipant);
 				
 				var participantId = selectedParticipant["id"];
-				showSuccess("Bearbeiten von Nr. " + participantId + " erfolgreich!");
+				showFeedback("Bearbeiten von Nr. " + participantId + " erfolgreich!", true);
 	});
 }
 
@@ -51,6 +51,6 @@ function erase(){
 				changeView("#delete-form", "#participant-table");
 				
 				var participantId = selectedParticipant["id"];
-				showSuccess("Löschen von Nr. " + participantId + " erfolgreich!");
+				showFeedback("Löschen von Nr. " + participantId + " erfolgreich!", true);
 	});
 }

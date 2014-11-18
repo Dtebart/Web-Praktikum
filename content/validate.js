@@ -19,6 +19,6 @@ function isValid(fieldContent, fieldName){
 
 $(document).ajaxError(function(event,xhr,options,exc){
 	if (xhr.status == 403){
-		alert("Kennwort fehlerhaft");
+		showFeedback("Kennwort fehlerhaft!", false);
 	}
 });
