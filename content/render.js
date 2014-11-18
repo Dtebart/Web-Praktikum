@@ -35,3 +35,8 @@ function editEntry(participant){
 function deleteEntry(participant){
 	$("#user" + participant["id"]).remove();
 }
+
+function showSuccess(feedbackText){
+	$("#feedback-text").text(feedbackText);
+	$("#feedback").show();
+}

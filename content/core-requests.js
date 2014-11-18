@@ -10,19 +10,17 @@ function registrate(){
 							$(".nav-tabs .active").removeClass("active");
 							$("#registrate-form").removeClass("active");
 							$("#participant-table").addClass("active");
-							$("#feedback_text").text("Registrierung erfolgreich!");
-							$("#feedback").show();
 							
+							var participantId = newParticipant["id"];
+							showSuccess("Nr. " + participantId + " erfolgreich registriert");
 		});
 	}
-
-	}
+}
 
 function edit(){
 	var selectedParticipant = buildParticipant("edit-form");
 	
 	$.post("edit", selectedParticipant, function(data, status){
-				
 				var json_string = data.replace(/'/g, '"');
 				var selectedParticipant = JSON.parse(json_string);
 				editEntry(selectedParticipant);
@@ -30,8 +28,9 @@ function edit(){
 				$("#edit-form").removeClass("active");
 				$("#participant-table").addClass("active");
 				$("#participant-table").addClass("has-success");
-				$("#feedback_text").text("Bearbeiten erfolgreich!");
-				$("#feedback").show();
+				
+				var participantId = selectedParticipant["id"];
+				showSuccess("Bearbeiten von Nr. " + participantId + " erfolgreich!");
 	});
 }
 
@@ -45,7 +44,8 @@ function erase(){
 				$(".nav-tabs .active").removeClass("active");
 				$("#delete-form").removeClass("active");
 				$("#participant-table").addClass("active");
-				$("#feedback_text").text("Löschen erfolgreich!");
-				$("#feedback").show();
+				
+				var participantId = selectedParticipant["id"];
+				showSuccess("Löschen von Nr. " + participantId + " erfolgreich!");
 	});
 }
