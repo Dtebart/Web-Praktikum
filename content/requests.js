@@ -10,8 +10,8 @@ $(document).ready(function(){
 });
 
 function registrate(){
-	
 	var newParticipant = buildParticipant("registrate-form");
+	
 	if (isValid(newParticipant["lastName"], "#name") & isValid(newParticipant["firstName"], "#vorname") & isValid(newParticipant["password"], "#passwort"))
 	{
 		$.post("registrate", newParticipant, function(data, status){

@@ -1,9 +1,54 @@
+var participantIndex;
+
+// Get ready to change the view to a form when a button was clicked
+$(document).ready(function(){
+	$("table").on("click", "button.btn-primary", function(event) {
+		$("#participant-table").removeClass("active");
+		$(".nav-tabs .active").removeClass("active");
+		
+		participantIndex = $(this).data("index");
+		var participantEntry = entries[participantIndex];
+		var inputFields;
+		
+		$("#feedback").hide();
+		if ($(this).text() == "Bearbeiten"){
+			$("#edit-form").addClass("active");
+			inputFields = $("#edit-form").find(":text");
+		}
+		else{
+			$("#delete-form").addClass("active");
+			inputFields = $("#delete-form").find(":text");
+		}
+		
+		for (var i = 1; i <= inputFields.length; i++){
+			var participantData = participantEntry[participantKeywords[i]];
+			inputFields[i - 1].value = participantData;
+		}
+    });
+});
+
+function getFormData(formName){
+	var content = [];
+	
+	if (formName != "registrate-form"){
+		content.push(entries[participantIndex]["id"]);
+	}
+	
+	for (i = 1; i < participantKeywords.length; i++){
+		content.push($("#" + formName + " " + "#" + participantKeywords[i]).val());
+	}
+	
+	return content;
+}
+
+// Switch to another view component
 function changeView(oldView, newView){
 	$(".nav-tabs .active").removeClass("active");
 	$(oldView).removeClass("active");
 	$(newView).addClass("active");
 }
 
+// View operation after adding a user
 function showNewEntry(participant){
 	var row = $("<tr id = \"user" + participant["id"] + "\"></tr>");
 	var rowData = []
@@ -29,6 +74,7 @@ function showNewEntry(participant){
 	$("#participant-table table").append(row);
 }
 
+// View operation after changing a user
 function showChangedEntry(participant){
 	var row = $("#user" + participant["id"]);
 	row.children().each(function(i){
@@ -38,6 +84,7 @@ function showChangedEntry(participant){
 	});
 }
 
+// View operation after removing a user
 function deleteEntry(participant){
 	$("#user" + participant["id"]).remove();
 }
