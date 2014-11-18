@@ -1,6 +1,12 @@
-function renderNewEntry(participant){
+function changeView(oldView, newView){
+	$(".nav-tabs .active").removeClass("active");
+	$(oldView).removeClass("active");
+	$(newView).addClass("active");
+}
+
+function showNewEntry(participant){
 	var row = $("<tr id = \"user" + participant["id"] + "\"></tr>");
-	var rowData = new Array();
+	var rowData = []
 	
 	// record the received data into the table row
 	for (var i = 0; i < participantKeywords.length - 1; i++){
@@ -23,7 +29,7 @@ function renderNewEntry(participant){
 	$("#participant-table table").append(row);
 }
 
-function editEntry(participant){
+function showChangedEntry(participant){
 	var row = $("#user" + participant["id"]);
 	row.children().each(function(i){
 		if (i < participantKeywords.length - 1){

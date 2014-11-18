@@ -1,4 +1,4 @@
-var entries = new Array();
+var entries = [];
 var participantKeywords = ["id", "lastName", "firstName", "numOfCompanions", "course", "advisor", "password"];
 var participantIndex;
 
@@ -22,7 +22,12 @@ function buildParticipant(formName){
 
 function addEntry(participant){
 	entries.push(participant);
-	renderNewEntry(participant);
+	showNewEntry(participant);
+}
+
+function editEntry(participant){
+	entries[participantIndex] = participant;
+	showChangedEntry(participant);
 }
 
 // Get ready to change the view to a form when a button was clicked
@@ -35,20 +40,18 @@ $(document).ready(function(){
 		var participantEntry = entries[participantIndex];
 		var inputFields;
 		
+		$("#feedback").hide();
 		if ($(this).text() == "Bearbeiten"){
-			$("#feedback").hide();
 			$("#edit-form").addClass("active");
 			inputFields = $("#edit-form").find(":text");
 		}
 		else{
-			$("#feedback").hide();
 			$("#delete-form").addClass("active");
 			inputFields = $("#delete-form").find(":text");
 		}
 		
 		for (var i = 1; i <= inputFields.length; i++){
 			var participantData = participantEntry[participantKeywords[i]];
-			console.log(participantData);
 			inputFields[i - 1].value = participantData;
 		}
     });

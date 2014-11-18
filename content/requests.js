@@ -1,3 +1,14 @@
+// Fetch a list of registrated users from the server
+$(document).ready(function(){
+	$.get("get_list", function(data,status){
+		var participantsStr = data.replace(/'/g, '"');
+		var participantList = JSON.parse(participantsStr);
+		for (i = 0; i < participantList.length; i++){
+			addEntry(participantList[i]);
+		}
+	});
+});
+
 function registrate(){
 	
 	var newParticipant = buildParticipant("registrate-form");
@@ -7,9 +18,7 @@ function registrate(){
 							var json_string = data.replace(/'/g, '"');
 							var newParticipant = JSON.parse(json_string);
 							addEntry(newParticipant);
-							$(".nav-tabs .active").removeClass("active");
-							$("#registrate-form").removeClass("active");
-							$("#participant-table").addClass("active");
+							changeView("#registrate-form", "#participant-table");
 							
 							var participantId = newParticipant["id"];
 							showSuccess("Nr. " + participantId + " erfolgreich registriert");
@@ -22,12 +31,10 @@ function edit(){
 	
 	$.post("edit", selectedParticipant, function(data, status){
 				var json_string = data.replace(/'/g, '"');
-				var selectedParticipant = JSON.parse(json_string);
-				editEntry(selectedParticipant);
-				$(".nav-tabs .active").removeClass("active");
-				$("#edit-form").removeClass("active");
-				$("#participant-table").addClass("active");
-				$("#participant-table").addClass("has-success");
+				var changedParticipant = JSON.parse(json_string);
+				
+				changeView("#edit-form", "#participant-table");
+				editEntry(changedParticipant);
 				
 				var participantId = selectedParticipant["id"];
 				showSuccess("Bearbeiten von Nr. " + participantId + " erfolgreich!");
@@ -41,9 +48,7 @@ function erase(){
 				var json_string = data.replace(/'/g, '"');
 				var selectedParticipant = JSON.parse(json_string);
 				deleteEntry(selectedParticipant);
-				$(".nav-tabs .active").removeClass("active");
-				$("#delete-form").removeClass("active");
-				$("#participant-table").addClass("active");
+				changeView("#delete-form", "#participant-table");
 				
 				var participantId = selectedParticipant["id"];
 				showSuccess("Löschen von Nr. " + participantId + " erfolgreich!");
