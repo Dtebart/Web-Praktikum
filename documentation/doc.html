@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="web-praktikum-2---3-dokumentation">Web Praktikum 2 - 3 Dokumentation</h1>
+<ul>
+<li><h2>Gruppe R</h2></li>
+<li><h2>Gruppenmitglieder: Redecker, Max; Tebart, Daniel</h2></li>
+<li><h2>Datum: 18.11.2014</h2></li>
+</ul>
+<h2 id="allgemeines-zur-lösung">1. Allgemeines zur Lösung</h2>
+<p>Die Web-Anwendung Studentenfeier ist eine Single-Page Webanwendung und wurde mit einer Client-Server Architektur implementiert. Der Server wurde hierbei mit Python und dem Framework Cherrypy realisiert. Die Übertragung der Daten findet asynchron mit den Jquery-Ajax Methoden statt. Das Format der übertragenden ist JSON konform. Einige Elemente mit ihrer Darstellung und Funktionalität stammen aus dem Bootstrap-Framework.</p>
+<h2 id="beschreibung-der-komponenten">2. Beschreibung der Komponenten</h2>
+<p>An Komponenten existieren:</p>
+<ul>
+<li>Eine html Index-Datei</li>
+<li>Javascript Dateien für die Verarbeitung der Teilnehmerliste, der Manipulation von der Ansicht des Benutzers (View), für Clientseitige-Validierung und zum Versenden der Anfragen sowie Reagieren auf Server - Antworten</li>
+<li>Ein Python - Modul für die anfängliche Serverkonfiguration sowie ein Modul mit den Methoden, die von einem Client aufgerufen werden können.</li>
+<li>Ein Stylesheet für die Html-Elemente</li>
+</ul>
+<h4 id="verarbeitung-der-teilnehmerliste">2.1 Verarbeitung der Teilnehmerliste</h4>
+<p>Die Verwaltung der Teilnehmerliste dient dazu die Kommunikation zum Server und das Anzeigen der gespeicherten Daten zu erleichtern. Demzufolge benutzen die Kommunikationsschnittstellen, also Ajax-Requests Methoden um Einträge zu speichern oder zu laden. Zur Verwaltung der Liste wurden folgende Methoden implementiert:</p>
+<ul>
+<li>Hinzufügen eines Teilnehmers(participant): <em>addEntry(participant)</em></li>
+<li>Bearbeiten eines Teilnehmers(participant): <em>editEntry(participant)</em></li>
+<li>Generierung eines Teilnehmer-Objekts aus einem Formulars: <em>buildParticipant(formName)</em></li>
+</ul>
+<p>Dabei benutzt <em>buildParticipant(formName)</em> eine Hilfsfunktion aus dem View Modul um die benötigten Information von dem Html-Dokument zu bekommen.</p>
+<h4 id="anfragen-an-den-server">2.2 Anfragen an den Server</h4>
+<p>Die Anfragen des Webbrowsers wurden in einer eigenen Datei zusammengefasst. In folgenden Fällen wird dabei einer der Anfragen durchgeführt:</p>
+<ul>
+<li>Das Dokument kann bearbeitet werden (Ready-Zustand): Es wird ein Get-Request versendet, woraufhin der Server eine Liste mit allen durchgeführten Anmeldungen zurückliefert. Die Liste wird daraufhin gespeichert und auf der Startseite angezeigt.</li>
+<li>Der Benutzer will sich für das Event registrieren: Es wird ein Post-Request versendet mit den Eingabedaten im JSON-Format. Die Serverantwort ist eine einfache Bestätigung woraufhin der Nutzer auf die Startseite zurück navigiert wird mit einer passenden Textanzeige.</li>
+<li>Der Benutzer möchte ein Profil bearbeiten: Ein Post-Request wird gesendet mit den veränderten Daten des Nutzeraccounts woraufhin der Server die entsprechende Daten anhand der Nutzernummer und bearbeitet. Das Ergebnis wird zum Client zurückgeschickt und die veränderten Daten in der Liste auf der Startseite angezeigt.</li>
+<li>Der Benutzer möchte ein Profil löschen: Ein Post-Request mit den Daten des zu löschenden Benutzers wird an den Server geschickt woraufhin die Daten im Bestand des Servers gelöscht werden. Als Reaktion auf die Bestätigung wird der Nutzer zur Startseite navigiert mit einer Liste ohne den Eintrag des gelöschten Nutzers.</li>
+</ul>
+<p>Das wird durch die folgenden Methoden erreicht:</p>
+<ul>
+<li>Liste empfangen: Anonyme Callback-Methode</li>
+<li>Für Event registrieren: <em>registrate()</em></li>
+<li>Profil bearbeiten: <em>edit()</em></li>
+<li>Profil löschen: <em>erase()</em></li>
+</ul>
+<h4 id="clientseitige-validierung">2.3 Clientseitige Validierung</h4>
+<p>Die Clienseitige Validierung ist eine weitere seperate Komponente. Sie beinhaltet:</p>
+<ul>
+<li>Eine Überprüfungsmethode die zu einem gegebenen Feld überprüft ob der Inhalt nicht leer ist: <em>isValid(fieldContent, fieldName)</em>:</li>
+<li>Eine Callback-Methode, die <em>isValid(fieldContent, fieldName)</em> benutzt, um bei Änderung des eventbezogenen Elements den neuen Inhalt zu überprüfen um unmittelbar eine clientseitige Rückmeldung beim Nutzer anzuzeigen: <em>checkInput(event)</em></li>
+</ul>
+<h4 id="ansicht-der-web-anwendungview">2.4 Ansicht der Web-Anwendung(View)</h4>
+<p>Für die Verarbeitung der View, also der Struktur und Präsentation wurden folgende Methoden implementiert:</p>
+<ul>
+<li>Ausblenden eines Elements und Einblenden eines anderen: <em>changeView(oldView, newView)</em></li>
+<li>Extrahieren der Eingabedaten aus einem Formular: <em>getFormData(formName)</em></li>
+<li>Übertragen der Informationen von der Liste in einem Formular vor Wechsel auf Formularansicht: Anonyme Callback-Methode falls der Button zum Bearbeiten oder Löschen gedrückt wird.</li>
+<li>Anzeigen einer Rückmeldebox mit entsprechender Präsentation: <em>showFeedback(feedbackText, operationSuccessfull)</em></li>
+<li>Anzeigen neuer Liste nach Registrierung: <em>showNewEntry(participant)</em></li>
+<li>Anzeigen neuer Liste nach Bearbeitung: <em>showChangedEntry(participant)</em></li>
+<li>Anzeigen neuer Liste nach Löschung: <em>deleteEntry(participant)</em></li>
+</ul>
+<h3 id="api">2.2 API</h3>
+<p>...Platzhalter</p>
+<h3 id="datenablage">3 Datenablage</h3>
+<h3 id="backend">3.1 Backend</h3>
+<p>Die Teilnehmerliste wird beim Server auf mehrere Dateien aufgeteilt, wobei eine Datei genau einen Teilnehmer mit seinen Daten speichert. Die Teilnehmerdaten liegen im JSON-Format vor mit den Attributen:</p>
+<ul>
+<li>Identifikation: <em>id</em></li>
+<li>Name: <em>lastName</em></li>
+<li>Vorname: <em>firstName</em></li>
+<li>Studiengang: <em>course</em></li>
+<li>Betreuer: <em>advisor</em></li>
+<li>Begleiteranzahl: <em>numOfCompanions</em></li>
+<li>Passwort: <em>passwort</em></li>
+</ul>
+<p>Die Dateien werden durch das Attribut <em>id</em> identifiziert. Die Daten eines Nutzers mit der id 5 werden also in der Datei 5.json gespeichert. Um die Anzahl der registrierten Nutzer verfolgen zu können existiert zusätlich eine Datei mit dem Namen id.txt, in dem die zuletzt zugewiesene id gespeichert wird.</p>
+<h3 id="frontend">3.2 Frontend</h3>
+<p>Clientseitig werden die Teilnehmer temporär in dem Array <em>entries</em> gespeichert, das mit einem implementierten Modul verarbeitet wird (siehe 2.1).</p>
+</body>
+</html>
