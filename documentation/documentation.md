@@ -57,7 +57,52 @@ Für die Verarbeitung der View, also der Struktur und Präsentation wurden folge
 
 
 ### 2.2 API
-...Platzhalter
+#### 2.2.1 Server API
+##### 2.2.2.1 Überblick
+* Der Server stellt einige verschiedene Funktionen bereit: die *edit()* Methode, die Daten einer Anmeldung ändern kann, die *registrate()* Methode, die eine neue Anmeldung erstellt, die *delete()* Methode, welche eine Anmeldung dauerhaft löscht sowie die *get_list()* Methode, die alle bisherigen Anmeldungen liefert.
+* Mithilfe von *get_list()* können alle Anmeldungen vom Server abgerufen werden. Die Anmeldungen werden im JSON Format übertragen. 
+* *edit(), registrate(), delete()* benötigen für einen Aufruf jeweils einen Teilnehmer. Der Teilnehmer ist im JSON-Format, siehe 3.1.
+
+##### 2.2.2.2 Beispiele
+
+* Beispiel für *get_list()*:
+		//Asynchrone Anfrage für die Liste
+		$.get("get_list", function(data,status){		
+			//Liste mit JSON Methoden einlesen
+			var participantsStr = data.replace(/'/g, '"');
+			var participantList = JSON.parse(participantsStr);			
+		//participantList hat nun alle Einträge und kann weiterverarbeitet werden
+		});
+		
+* Beispiel für *registrate()*:
+		//Erstelle ein newParticipant im JSON Format
+		var newParticipant = getParticipant();
+		//der newParticipant wird nun mit Jquery und Ajax übertragen
+		$.post("registrate", newParticipant, function(data, status){
+		//Weitere Verarbeitung	
+		});
+		
+* Beispiel für *edit()*:
+		//Erstelle ein selectedParticipant im JSON Format
+		var newParticipant = getParticipant();
+		//der newParticipant wird nun mit Jquery und Ajax übertragen
+		$.post("edit", selectedParticipant, function(data, status){
+			//geänderter Teilnehmer für spätere Zwecke speichern
+			var json_string = data.replace(/'/g, '"');
+			var changedParticipant = JSON.parse(json_string);
+			//Weitere Verarbeitung	
+		});
+		
+* Beispiel für *delete()*:
+		//Erstelle ein selectedParticipant im JSON Format
+		var newParticipant = getParticipant();
+		//Zu löschender Teilnehmer an den Server senden
+		//ACHTUNG: Kann nicht rückgängig gemacht werden!
+		$.post("delete", selectedParticipant, function(data, status){
+			//Weitere Verarbeitung			
+		});
+#### 2.2.2 Client API
+* Siehe Kapitel 2.1 bis 2.4.
 
 ### 3 Datenablage
 ### 3.1 Backend

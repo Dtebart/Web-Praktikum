@@ -50,7 +50,14 @@ class Application_cl(object):
         id_file.close()
         
         return str(user_id);
-    
+ 
+    #-------------------------------------
+    def check_incoming_Data(self, data):
+    #-------------------------------------
+        if len(data.keys()) == 0:
+            raise cherrypy.HTTPError(403, "No Data recieved")
+        return True
+	
     #-------------------------------------
     def get_list(self, *arglist, **kwargs):
     #-------------------------------------
@@ -76,14 +83,15 @@ class Application_cl(object):
     #-------------------------------------
         # Catch request-data
         registration_data = cherrypy.request.body.params
-        
+        self.check_incoming_Data(registration_data)
+	    
         # Create new file for user registration
         registration_data["id"] = self.next_user_id()
         json_file = open("data\\" + registration_data["id"] + ".json", "w+")
         json.dump(registration_data, json_file)
         json_file.close()
         
-        return str(registration_data)
+        return str(registration_data)	       
     
     registrate.exposed = True
     
@@ -92,7 +100,7 @@ class Application_cl(object):
     #-------------------------------------
         # Catch request-data
         edit_data = cherrypy.request.body.params
-        
+        self.check_incoming_Data(edit_data)	 		
         # Get password in file of requested user
         json_obj = self.get_user_data(edit_data["id"])
         
@@ -113,6 +121,7 @@ class Application_cl(object):
     #-------------------------------------
         # Catch request-data
         delete_data = cherrypy.request.body.params
+        self.check_incoming_Data(delete_data)
         
         json_obj = self.get_user_data(delete_data["id"])
         if json_obj["password"] == delete_data["password"]:
@@ -123,5 +132,7 @@ class Application_cl(object):
         return str(delete_data)
     
     delete.exposed = True
+
+
 # EOF
             
