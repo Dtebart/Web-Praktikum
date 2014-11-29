@@ -4,6 +4,8 @@ import cherrypy
 import json
 import os
 
+from app import database
+
 #-------------------------------------
 class Application_cl(object):
 #-------------------------------------
@@ -12,7 +14,7 @@ class Application_cl(object):
     def __init__(self):
     #-------------------------------------
         # constructor
-        pass
+        self.database_obj = database.Database("data\\")
     
     #-------------------------------------
     def default(self, *arglist, **kwargs):
@@ -25,31 +27,6 @@ class Application_cl(object):
         raise cherrypy.HTTPError(404, msg_s)
     
     default.exposed = True
-    
-    #-------------------------------------
-    def get_user_data(self, user_id):
-    #-------------------------------------
-        json_file = open("data\\" + user_id + ".json", "r+")
-        json_str = json_file.read()
-        json_obj = json.loads(json_str)
-        json_file.close()
-        
-        return json_obj
-    
-    #-------------------------------------
-    def next_user_id(self):
-    #-------------------------------------
-        # Catch current user-id + 1
-        id_file = open("data\\id.txt", "r+")
-        user_id = int(id_file.read()) + 1
-        id_file.close()
-        
-        # Override new user-id
-        id_file = open("data\\id.txt", "w")
-        id_file.write(str(user_id))
-        id_file.close()
-        
-        return str(user_id);
  
     #-------------------------------------
     def check_incoming_Data(self, data):
@@ -68,12 +45,8 @@ class Application_cl(object):
         # Open all json files in directory data and append them to output string
         for participant_file in participants_table:
             if participant_file.endswith(".json"):
-                file_obj = open("data\\" + participant_file, "r+")
-                json_string = file_obj.read()
-                json_obj = json.loads(json_string)
+                json_obj = self.database_obj.readFile(participant_file[:-5])
                 json_list.append(json_obj)
-                file_obj.close()
-        
         return str(json_list)
     
     get_list.exposed = True
@@ -84,14 +57,9 @@ class Application_cl(object):
         # Catch request-data
         registration_data = cherrypy.request.body.params
         self.check_incoming_Data(registration_data)
-	    
-        # Create new file for user registration
-        registration_data["id"] = self.next_user_id()
-        json_file = open("data\\" + registration_data["id"] + ".json", "w+")
-        json.dump(registration_data, json_file)
-        json_file.close()
+        self.database_obj.insertFile(registration_data)
         
-        return str(registration_data)	       
+        return str(registration_data)   
     
     registrate.exposed = True
     
@@ -102,13 +70,11 @@ class Application_cl(object):
         edit_data = cherrypy.request.body.params
         self.check_incoming_Data(edit_data)	 		
         # Get password in file of requested user
-        json_obj = self.get_user_data(edit_data["id"])
+        json_obj = self.database_obj.readFile(edit_data["id"])
         
         if json_obj["password"] == edit_data["password"]:
             # Override user-data with new data
-            json_file = open("data\\" + edit_data["id"] + ".json", "w+")
-            json.dump(edit_data, json_file)
-            json_file.close()
+            self.database_obj.editFile(edit_data)
         else:
             raise cherrypy.HTTPError(403, "Invalid password")
         
@@ -123,9 +89,9 @@ class Application_cl(object):
         delete_data = cherrypy.request.body.params
         self.check_incoming_Data(delete_data)
         
-        json_obj = self.get_user_data(delete_data["id"])
+        json_obj = self.database_obj.readFile(delete_data["id"])
         if json_obj["password"] == delete_data["password"]:
-            os.remove("data\\" + delete_data["id"] + ".json")
+            self.database_obj.deleteFile(delete_data)
         else:
             raise cherrypy.HTTPError(403, "Invalid password")        
         

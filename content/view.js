@@ -35,7 +35,7 @@ function getFormData(formName){
 	}
 	
 	for (i = 1; i < participantKeywords.length; i++){
-		content.push($("#" + formName + " " + "#" + participantKeywords[i]).val());
+		content.push($("#" + formName + " " + "." + participantKeywords[i]).val());
 	}
 	
 	return content;
