@@ -58,49 +58,31 @@ Für die Verarbeitung der View, also der Struktur und Präsentation wurden folge
 
 ### 2.2 API
 #### 2.2.1 Server API
-##### 2.2.2.1 Überblick
+##### 2.2.1.1 Öffentliche Methoden
 * Der Server stellt einige verschiedene Funktionen bereit: die *edit()* Methode, die Daten einer Anmeldung ändern kann, die *registrate()* Methode, die eine neue Anmeldung erstellt, die *delete()* Methode, welche eine Anmeldung dauerhaft löscht sowie die *get_list()* Methode, die alle bisherigen Anmeldungen liefert.
-* Mithilfe von *get_list()* können alle Anmeldungen vom Server abgerufen werden. Die Anmeldungen werden im JSON Format übertragen. 
-* *edit(), registrate(), delete()* benötigen für einen Aufruf jeweils einen Teilnehmer. Der Teilnehmer ist im JSON-Format, siehe 3.1.
+* Die Parameter werden von Clientseite gesendet und die Methoden lesen diese automatisch aus. Der Parameter (Teilnehmer) muss im JSON Format, wie in 3.1 dargestellt, gesendet werden.
 
-##### 2.2.2.2 Beispiele
+| Funktionsname | Beschreibung                                       | Parameter                 |
+|---------------|----------------------------------------------------|---------------------------|
+| get_list()    | Liest alle JSON  Dateien aus und liefert alle Teilnehmer als String im JSON Format. | keine |
+| registrate()  | Fügt einen neuen Teilnehmer hinzu und speichert ihn mit einer ID im JSON Format persistent.                 | Einen Teilnehmer im JSON Format   |
+| edit()        | Die ID des Teilnehmers wird ausgelesen und anschließend wird der Teilnehmer unter dieser ID im JSON Format gespeichert und überschreibt somit die alte Datei.  | Einen Teilnehmer im JSON Format                          |
+| delete()      | Die ID des Teilnehmers wird ausgelesen, daraufhin wird die JSON Datei mit der ausgelesenen ID als Namen dauerhaft gelöscht.                       |  Einen Teilnehmer im JSON Format                         |
 
-* Beispiel für *get_list()*:
-		//Asynchrone Anfrage für die Liste
-		$.get("get_list", function(data,status){		
-			//Liste mit JSON Methoden einlesen
-			var participantsStr = data.replace(/'/g, '"');
-			var participantList = JSON.parse(participantsStr);			
-		//participantList hat nun alle Einträge und kann weiterverarbeitet werden
-		});
-		
-* Beispiel für *registrate()*:
-		//Erstelle ein newParticipant im JSON Format
-		var newParticipant = getParticipant();
-		//der newParticipant wird nun mit Jquery und Ajax übertragen
-		$.post("registrate", newParticipant, function(data, status){
-		//Weitere Verarbeitung	
-		});
-		
-* Beispiel für *edit()*:
-		//Erstelle ein selectedParticipant im JSON Format
-		var newParticipant = getParticipant();
-		//der newParticipant wird nun mit Jquery und Ajax übertragen
-		$.post("edit", selectedParticipant, function(data, status){
-			//geänderter Teilnehmer für spätere Zwecke speichern
-			var json_string = data.replace(/'/g, '"');
-			var changedParticipant = JSON.parse(json_string);
-			//Weitere Verarbeitung	
-		});
-		
-* Beispiel für *delete()*:
-		//Erstelle ein selectedParticipant im JSON Format
-		var newParticipant = getParticipant();
-		//Zu löschender Teilnehmer an den Server senden
-		//ACHTUNG: Kann nicht rückgängig gemacht werden!
-		$.post("delete", selectedParticipant, function(data, status){
-			//Weitere Verarbeitung			
-		});
+* Die Methode *check_incoming_Data()* überprüft bei *registrate(), edit()* und *delete()* ob Daten angekommen sind. Falls nicht, wird eine Fehlermeldung an den Client gesendet.
+* Unvollständige oder falsch manipulierte Teilnehmer können zu einem Absturz führen.
+
+##### 2.2.1.2 Datenbank
+
+| Funktionsname | Beschreibung                                       | Parameter                 |
+|---------------|----------------------------------------------------|---------------------------|
+| next_user_id()    | Liest die zuletzt verwendete ID aus und gibt eine neue, nicht verwendete ID zurück. | keine |
+| insertFile(data)  | Zuerst wird eine neue ID mit *next_user_id()* berechnet, danach wird eine Datei mit der ID als Namen erstellt und der Inhalt von *data* dort gespeichert. | Einen Teilnehmer im JSON Format   |
+| readFile(fileName)   | Das File *fileName* wird ausgelesen und zurückgegeben.  | Dateinamen als String                      |
+| editFile(data)      | Eine bestehende Datei wird mit *data* überschrieben. die ID für die Datei wird aus *data* ausgelesen. |  Einen Teilnehmer im JSON Format                         |
+| deleteFile(data) | Eine bestehende Datei wird gelöscht. Die ID für die Datei wird aus *data* ausgelesen. |Einen Teilnehmer im JSON Format   |
+
+
 #### 2.2.2 Client API
 * Siehe Kapitel 2.1 bis 2.4.
 

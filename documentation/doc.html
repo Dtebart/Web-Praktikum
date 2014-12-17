@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta charset="utf-8">
-<meta name="generator" content="pandoc">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title></title>
-<style type="text/css">code{white-space: pre;}</style>
-<!--[if lt IE 9]>
-<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="table.css" type="text/css" />
 </head>
 <body>
 <h1 id="web-praktikum-2---3-dokumentation">Web Praktikum 2 - 3 Dokumentation</h1>
@@ -68,53 +66,86 @@
 <li>Anzeigen neuer Liste nach Löschung: <em>deleteEntry(participant)</em></li>
 </ul>
 <h3 id="api">2.2 API</h3>
-<h4 id="2-2-1-server-api">2.2.1 Server API</h4>
-<h5 id="2-2-2-1-berblick">2.2.2.1 Überblick</h5>
+<h4 id="server-api">2.2.1 Server API</h4>
+<h5 id="öffentliche-methoden">2.2.1.1 Öffentliche Methoden</h5>
 <ul>
 <li>Der Server stellt einige verschiedene Funktionen bereit: die <em>edit()</em> Methode, die Daten einer Anmeldung ändern kann, die <em>registrate()</em> Methode, die eine neue Anmeldung erstellt, die <em>delete()</em> Methode, welche eine Anmeldung dauerhaft löscht sowie die <em>get_list()</em> Methode, die alle bisherigen Anmeldungen liefert.</li>
-<li>Mithilfe von <em>get_list()</em> können alle Anmeldungen vom Server abgerufen werden. Die Anmeldungen werden im JSON Format übertragen. </li>
-<li><em>edit(), registrate(), delete()</em> benötigen für einen Aufruf jeweils einen Teilnehmer. Der Teilnehmer ist im JSON-Format, siehe 3.1.</li>
+<li>Die Parameter werden von Clientseite gesendet und die Methoden lesen diese automatisch aus. Der Parameter (Teilnehmer) muss im JSON Format, wie in 3.1 dargestellt, gesendet werden.</li>
 </ul>
-<h5 id="2-2-2-2-beispiele">2.2.2.2 Beispiele</h5>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Funktionsname</th>
+<th align="left">Beschreibung</th>
+<th align="left">Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">get_list()</td>
+<td align="left">Liest alle JSON Dateien aus und liefert alle Teilnehmer als String im JSON Format.</td>
+<td align="left">keine</td>
+</tr>
+<tr class="even">
+<td align="left">registrate()</td>
+<td align="left">Fügt einen neuen Teilnehmer hinzu und speichert ihn mit einer ID im JSON Format persistent.</td>
+<td align="left">Einen Teilnehmer im JSON Format</td>
+</tr>
+<tr class="odd">
+<td align="left">edit()</td>
+<td align="left">Die ID des Teilnehmers wird ausgelesen und anschließend wird der Teilnehmer unter dieser ID im JSON Format gespeichert und überschreibt somit die alte Datei.</td>
+<td align="left">Einen Teilnehmer im JSON Format</td>
+</tr>
+<tr class="even">
+<td align="left">delete()</td>
+<td align="left">Die ID des Teilnehmers wird ausgelesen, daraufhin wird die JSON Datei mit der ausgelesenen ID als Namen dauerhaft gelöscht.</td>
+<td align="left">Einen Teilnehmer im JSON Format</td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li><p>Beispiel für <em>get_list()</em>:</p>
-<pre><code>  //Asynchrone Anfrage für die Liste
-  $.get(&quot;get_list&quot;, function(data,status){        
-      //Liste mit JSON Methoden einlesen
-      var participantsStr = data.replace(/&#39;/g, &#39;&quot;&#39;);
-      var participantList = JSON.parse(participantsStr);            
-  //participantList hat nun alle Einträge und kann weiterverarbeitet werden
-  });
-</code></pre></li>
-<li><p>Beispiel für <em>registrate()</em>:</p>
-<pre><code>  //Erstelle ein newParticipant im JSON Format
-  var newParticipant = getParticipant();
-  //der newParticipant wird nun mit Jquery und Ajax übertragen
-  $.post(&quot;registrate&quot;, newParticipant, function(data, status){
-  //Weitere Verarbeitung    
-  });
-</code></pre></li>
-<li><p>Beispiel für <em>edit()</em>:</p>
-<pre><code>  //Erstelle ein selectedParticipant im JSON Format
-  var newParticipant = getParticipant();
-  //der newParticipant wird nun mit Jquery und Ajax übertragen
-  $.post(&quot;edit&quot;, selectedParticipant, function(data, status){
-      //geänderter Teilnehmer für spätere Zwecke speichern
-      var json_string = data.replace(/&#39;/g, &#39;&quot;&#39;);
-      var changedParticipant = JSON.parse(json_string);
-      //Weitere Verarbeitung    
-  });
-</code></pre></li>
-<li><p>Beispiel für <em>delete()</em>:</p>
-<pre><code>  //Erstelle ein selectedParticipant im JSON Format
-  var newParticipant = getParticipant();
-  //Zu löschender Teilnehmer an den Server senden
-  //ACHTUNG: Kann nicht rückgängig gemacht werden!
-  $.post(&quot;delete&quot;, selectedParticipant, function(data, status){
-      //Weitere Verarbeitung            
-  });
-</code></pre><h4 id="2-2-2-client-api">2.2.2 Client API</h4>
-</li>
+<li>Die Methode <em>check_incoming_Data()</em> überprüft bei <em>registrate(), edit()</em> und <em>delete()</em> ob Daten angekommen sind. Falls nicht, wird eine Fehlermeldung an den Client gesendet.</li>
+<li>Unvollständige oder falsch manipulierte Teilnehmer können zu einem Absturz führen.</li>
+</ul>
+<h5 id="datenbank">2.2.1.2 Datenbank</h5>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Funktionsname</th>
+<th align="left">Beschreibung</th>
+<th align="left">Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">next_user_id()</td>
+<td align="left">Liest die zuletzt verwendete ID aus und gibt eine neue, nicht verwendete ID zurück.</td>
+<td align="left">keine</td>
+</tr>
+<tr class="even">
+<td align="left">insertFile(data)</td>
+<td align="left">Zuerst wird eine neue ID mit <em>next_user_id()</em> berechnet, danach wird eine Datei mit der ID als Namen erstellt und der Inhalt von <em>data</em> dort gespeichert.</td>
+<td align="left">Einen Teilnehmer im JSON Format</td>
+</tr>
+<tr class="odd">
+<td align="left">readFile(fileName)</td>
+<td align="left">Das File <em>fileName</em> wird ausgelesen und zurückgegeben.</td>
+<td align="left">Dateinamen als String</td>
+</tr>
+<tr class="even">
+<td align="left">editFile(data)</td>
+<td align="left">Eine bestehende Datei wird mit <em>data</em> überschrieben. die ID für die Datei wird aus <em>data</em> ausgelesen.</td>
+<td align="left">Einen Teilnehmer im JSON Format</td>
+</tr>
+<tr class="odd">
+<td align="left">deleteFile(data)</td>
+<td align="left">Eine bestehende Datei wird gelöscht. Die ID für die Datei wird aus <em>data</em> ausgelesen.</td>
+<td align="left">Einen Teilnehmer im JSON Format</td>
+</tr>
+</tbody>
+</table>
+<h4 id="client-api">2.2.2 Client API</h4>
+<ul>
 <li>Siehe Kapitel 2.1 bis 2.4.</li>
 </ul>
 <h3 id="datenablage">3 Datenablage</h3>
