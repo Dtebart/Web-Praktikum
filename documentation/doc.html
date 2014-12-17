@@ -78,6 +78,7 @@
 <th align="left">Funktionsname</th>
 <th align="left">Beschreibung</th>
 <th align="left">Parameter</th>
+<th align="left">Rückgabewert</th>
 </tr>
 </thead>
 <tbody>
@@ -85,21 +86,25 @@
 <td align="left">get_list()</td>
 <td align="left">Liest alle JSON Dateien aus und liefert alle Teilnehmer als String im JSON Format.</td>
 <td align="left">keine</td>
+<td align="left">Liste der Teilnehmer (string)</td>
 </tr>
 <tr class="even">
 <td align="left">registrate()</td>
 <td align="left">Fügt einen neuen Teilnehmer hinzu und speichert ihn mit einer ID im JSON Format persistent.</td>
 <td align="left">Einen Teilnehmer im JSON Format</td>
+<td align="left">Nicht vorhanden</td>
 </tr>
 <tr class="odd">
 <td align="left">edit()</td>
 <td align="left">Die ID des Teilnehmers wird ausgelesen und anschließend wird der Teilnehmer unter dieser ID im JSON Format gespeichert und überschreibt somit die alte Datei.</td>
 <td align="left">Einen Teilnehmer im JSON Format</td>
+<td align="left">Nicht vorhanden</td>
 </tr>
 <tr class="even">
 <td align="left">delete()</td>
 <td align="left">Die ID des Teilnehmers wird ausgelesen, daraufhin wird die JSON Datei mit der ausgelesenen ID als Namen dauerhaft gelöscht.</td>
 <td align="left">Einen Teilnehmer im JSON Format</td>
+<td align="left">Nicht vorhanden</td>
 </tr>
 </tbody>
 </table>
@@ -114,6 +119,7 @@
 <th align="left">Funktionsname</th>
 <th align="left">Beschreibung</th>
 <th align="left">Parameter</th>
+<th align="left">Rückgabewert</th>
 </tr>
 </thead>
 <tbody>
@@ -121,26 +127,31 @@
 <td align="left">next_user_id()</td>
 <td align="left">Liest die zuletzt verwendete ID aus und gibt eine neue, nicht verwendete ID zurück.</td>
 <td align="left">keine</td>
+<td align="left">ID (string)</td>
 </tr>
 <tr class="even">
 <td align="left">insertFile(data)</td>
 <td align="left">Zuerst wird eine neue ID mit <em>next_user_id()</em> berechnet, danach wird eine Datei mit der ID als Namen erstellt und der Inhalt von <em>data</em> dort gespeichert.</td>
 <td align="left">Einen Teilnehmer im JSON Format</td>
+<td align="left">Nicht vorhanden</td>
 </tr>
 <tr class="odd">
 <td align="left">readFile(fileName)</td>
 <td align="left">Das File <em>fileName</em> wird ausgelesen und zurückgegeben.</td>
 <td align="left">Dateinamen als String</td>
+<td align="left">Ausgelesenens File (string)</td>
 </tr>
 <tr class="even">
 <td align="left">editFile(data)</td>
 <td align="left">Eine bestehende Datei wird mit <em>data</em> überschrieben. die ID für die Datei wird aus <em>data</em> ausgelesen.</td>
 <td align="left">Einen Teilnehmer im JSON Format</td>
+<td align="left">Nicht vorhanden</td>
 </tr>
 <tr class="odd">
 <td align="left">deleteFile(data)</td>
 <td align="left">Eine bestehende Datei wird gelöscht. Die ID für die Datei wird aus <em>data</em> ausgelesen.</td>
 <td align="left">Einen Teilnehmer im JSON Format</td>
+<td align="left">Nicht vorhanden</td>
 </tr>
 </tbody>
 </table>

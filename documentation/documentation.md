@@ -62,25 +62,25 @@ Für die Verarbeitung der View, also der Struktur und Präsentation wurden folge
 * Der Server stellt einige verschiedene Funktionen bereit: die *edit()* Methode, die Daten einer Anmeldung ändern kann, die *registrate()* Methode, die eine neue Anmeldung erstellt, die *delete()* Methode, welche eine Anmeldung dauerhaft löscht sowie die *get_list()* Methode, die alle bisherigen Anmeldungen liefert.
 * Die Parameter werden von Clientseite gesendet und die Methoden lesen diese automatisch aus. Der Parameter (Teilnehmer) muss im JSON Format, wie in 3.1 dargestellt, gesendet werden.
 
-| Funktionsname | Beschreibung                                       | Parameter                 |
-|---------------|----------------------------------------------------|---------------------------|
-| get_list()    | Liest alle JSON  Dateien aus und liefert alle Teilnehmer als String im JSON Format. | keine |
-| registrate()  | Fügt einen neuen Teilnehmer hinzu und speichert ihn mit einer ID im JSON Format persistent.                 | Einen Teilnehmer im JSON Format   |
-| edit()        | Die ID des Teilnehmers wird ausgelesen und anschließend wird der Teilnehmer unter dieser ID im JSON Format gespeichert und überschreibt somit die alte Datei.  | Einen Teilnehmer im JSON Format                          |
-| delete()      | Die ID des Teilnehmers wird ausgelesen, daraufhin wird die JSON Datei mit der ausgelesenen ID als Namen dauerhaft gelöscht.                       |  Einen Teilnehmer im JSON Format                         |
+| Funktionsname | Beschreibung                                       | Parameter                 | Rückgabewert |
+|---------------|----------------------------------------------------|---------------------------|---------------------------|
+| get_list()    | Liest alle JSON  Dateien aus und liefert alle Teilnehmer als String im JSON Format. | keine | Liste der Teilnehmer (string) |
+| registrate()  | Fügt einen neuen Teilnehmer hinzu und speichert ihn mit einer ID im JSON Format persistent. | Einen Teilnehmer im JSON Format   | Nicht vorhanden |
+| edit()        | Die ID des Teilnehmers wird ausgelesen und anschließend wird der Teilnehmer unter dieser ID im JSON Format gespeichert und überschreibt somit die alte Datei.  | Einen Teilnehmer im JSON Format | Nicht vorhanden |
+| delete()      | Die ID des Teilnehmers wird ausgelesen, daraufhin wird die JSON Datei mit der ausgelesenen ID als Namen dauerhaft gelöscht.  |  Einen Teilnehmer im JSON Format | Nicht vorhanden |
 
 * Die Methode *check_incoming_Data()* überprüft bei *registrate(), edit()* und *delete()* ob Daten angekommen sind. Falls nicht, wird eine Fehlermeldung an den Client gesendet.
 * Unvollständige oder falsch manipulierte Teilnehmer können zu einem Absturz führen.
 
 ##### 2.2.1.2 Datenbank
 
-| Funktionsname | Beschreibung                                       | Parameter                 |
-|---------------|----------------------------------------------------|---------------------------|
-| next_user_id()    | Liest die zuletzt verwendete ID aus und gibt eine neue, nicht verwendete ID zurück. | keine |
-| insertFile(data)  | Zuerst wird eine neue ID mit *next_user_id()* berechnet, danach wird eine Datei mit der ID als Namen erstellt und der Inhalt von *data* dort gespeichert. | Einen Teilnehmer im JSON Format   |
-| readFile(fileName)   | Das File *fileName* wird ausgelesen und zurückgegeben.  | Dateinamen als String                      |
-| editFile(data)      | Eine bestehende Datei wird mit *data* überschrieben. die ID für die Datei wird aus *data* ausgelesen. |  Einen Teilnehmer im JSON Format                         |
-| deleteFile(data) | Eine bestehende Datei wird gelöscht. Die ID für die Datei wird aus *data* ausgelesen. |Einen Teilnehmer im JSON Format   |
+| Funktionsname | Beschreibung                                       | Parameter                 | Rückgabewert |
+|---------------|----------------------------------------------------|---------------------------|---------------------------|
+| next_user_id()    | Liest die zuletzt verwendete ID aus und gibt eine neue, nicht verwendete ID zurück. | keine | ID (string) |
+| insertFile(data)  | Zuerst wird eine neue ID mit *next_user_id()* berechnet, danach wird eine Datei mit der ID als Namen erstellt und der Inhalt von *data* dort gespeichert. | Einen Teilnehmer im JSON Format   | Nicht vorhanden|
+| readFile(fileName)   | Das File *fileName* wird ausgelesen und zurückgegeben.  | Dateinamen als String                      | Ausgelesenens File (string) |
+| editFile(data)      | Eine bestehende Datei wird mit *data* überschrieben. die ID für die Datei wird aus *data* ausgelesen. |  Einen Teilnehmer im JSON Format | Nicht vorhanden |
+| deleteFile(data) | Eine bestehende Datei wird gelöscht. Die ID für die Datei wird aus *data* ausgelesen. |Einen Teilnehmer im JSON Format   | Nicht vorhanden |
 
 
 #### 2.2.2 Client API
